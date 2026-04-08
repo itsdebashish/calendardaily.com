@@ -1,6 +1,77 @@
-export default calender26 = {
-  "january " : {
-    "mon", "tue",
-    "1" , "2"
-  }
-} 
+{
+  "year": 2026,
+  "months": [
+    {
+      "name": "January",
+      "monthIndex": 0,
+      "days": 31,
+      "startDay": 4
+    },
+    {
+      "name": "February",
+      "monthIndex": 1,
+      "days": 28,
+      "startDay": 0
+    },
+    {
+      "name": "March",
+      "monthIndex": 2,
+      "days": 31,
+      "startDay": 0
+    },
+    {
+      "name": "April",
+      "monthIndex": 3,
+      "days": 30,
+      "startDay": 3
+    },
+    {
+      "name": "May",
+      "monthIndex": 4,
+      "days": 31,
+      "startDay": 5
+    },
+    {
+      "name": "June",
+      "monthIndex": 5,
+      "days": 30,
+      "startDay": 1
+    },
+    {
+      "name": "July",
+      "monthIndex": 6,
+      "days": 31,
+      "startDay": 3
+    },
+    {
+      "name": "August",
+      "monthIndex": 7,
+      "days": 31,
+      "startDay": 6
+    },
+    {
+      "name": "September",
+      "monthIndex": 8,
+      "days": 30,
+      "startDay": 2
+    },
+    {
+      "name": "October",
+      "monthIndex": 9,
+      "days": 31,
+      "startDay": 4
+    },
+    {
+      "name": "November",
+      "monthIndex": 10,
+      "days": 30,
+      "startDay": 0
+    },
+    {
+      "name": "December",
+      "monthIndex": 11,
+      "days": 31,
+      "startDay": 2
+    }
+  ]
+}

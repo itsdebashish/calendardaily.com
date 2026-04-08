@@ -1,4 +1,4 @@
-import WallPage from "../pages/Wall/WallPage.tsx";
+import WallPage from "../pages/Wall/Page";
 export default function Home() {
   return <WallPage />;
 }
