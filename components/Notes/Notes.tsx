@@ -4,7 +4,7 @@ import { getStorage } from "@/store/localstore";
 import React from "react";
 
 function Input({ month, id }: { month: number; id: string }) {
-  const key = `${month}-${id}`;
+  const key = `note-${month}-${id}`;
 
   const [value, setValue] = React.useState("");
 
@@ -46,11 +46,11 @@ export default function Page({ month }: { month: number }) {
       <h1 className="font-bold text-xl text-center mb-4">Notes</h1>
 
       <div className="flex flex-col gap-3">
-        <Input month={month} id="0" />
-        <Input month={month} id="1" />
-        <Input month={month} id="2" />
-        <Input month={month} id="3" />
-        <Input month={month} id="4" />
+        <Input key={`0-${month}`} month={month} id="0" />
+        <Input key={`1-${month}`} month={month} id="1" />
+        <Input key={`2-${month}`} month={month} id="2" />
+        <Input key={`3-${month}`} month={month} id="3" />
+        <Input key={`4-${month}`} month={month} id="4" />
       </div>
     </div>
   );
