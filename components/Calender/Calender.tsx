@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import calender from "../../data/calender2026.json";
-import { Store } from "@/store/localstore"
-import { getStorage  } from "@/store/localstore";
+import { Store } from "@/store/localstore";
+import { getStorage } from "@/store/localstore";
+import { buildCalendarCells, toDateKey, WEEK_DAYS } from "@/utils/calender";
 
 export default function Page({ i }: { i: number }) {
   const { days, startDay } = calender.months[i];
@@ -11,10 +12,6 @@ export default function Page({ i }: { i: number }) {
   const [endDate, setEndDate] = useState<string | null>(null);
 
   const storageKey = `calendar-range-${i}`;
-
-  const toDateKey = (monthIndex: number, day: number) => {
-    return new Date(year, monthIndex, day).toISOString().split("T")[0];
-  };
 
   useEffect(() => {
     const saved = getStorage(storageKey);
@@ -33,32 +30,17 @@ export default function Page({ i }: { i: number }) {
   }, [startDate, endDate, storageKey]);
 
   const prevMonthDays = calender.months[(i - 1 + 12) % 12].days;
-
-  const result: number[] = [];
-
-  let beforeStart = 0;
-
-  for (let j = prevMonthDays - startDay + 1; j <= prevMonthDays; j++) {
-    result.push(j);
-    beforeStart++;
-  }
-
-  for (let j = 1; j <= days; j++) {
-    result.push(j);
-  }
-
-  const afterStart = beforeStart + days;
-
-  let next = 1;
-  while (result.length % 7 !== 0) {
-    result.push(next++);
-  }
+  const { cells, beforeStart, afterStart } = buildCalendarCells(
+    prevMonthDays,
+    startDay,
+    days
+  );
 
   const handleClick = (index: number) => {
     if (index < beforeStart || index >= afterStart) return;
 
     const day = index - beforeStart + 1;
-    const dateKey = toDateKey(i, day);
+    const dateKey = toDateKey(year, i, day);
 
     if (!startDate || (startDate && endDate)) {
       setStartDate(dateKey);
@@ -83,7 +65,7 @@ export default function Page({ i }: { i: number }) {
   return (
     <div className="w-full flex flex-col p-6 h-80 font-semibold">
       <div className="grid grid-cols-7 gap-4 pb-6">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((v, idx) => (
+        {WEEK_DAYS.map((v, idx) => (
           <h1 key={idx} className="text-center">
             {v}
           </h1>
@@ -91,13 +73,13 @@ export default function Page({ i }: { i: number }) {
       </div>
 
       <div className="grid grid-cols-7 gap-4">
-        {result.map((value, index) => {
+        {cells.map((value, index) => {
           const isPrevMonth = index < beforeStart;
           const isNextMonth = index >= afterStart;
           const isCurrentMonth = !isPrevMonth && !isNextMonth;
 
           const day = isCurrentMonth ? index - beforeStart + 1 : null;
-          const dateKey = day ? toDateKey(i, day) : null;
+          const dateKey = day ? toDateKey(year, i, day) : null;
 
           const isStart = dateKey === startDate;
           const isEnd = dateKey === endDate;
@@ -111,10 +93,10 @@ export default function Page({ i }: { i: number }) {
             <h1
               key={index}
               onClick={() => handleClick(index)}
-              className={`text-center rounded-full
+              className={`text-center  rounded-full
                 ${
                   isPrevMonth || isNextMonth
-                    ? "text-slate-300 cursor-default bg-transparent"
+                    ? "text-black cursor-default bg-transparent"
                     : "text-black cursor-pointer"
                 }
                 ${isStart ? "bg-blue-600 text-white" : ""}

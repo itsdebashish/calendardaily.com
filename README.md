@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CalendarDaily
+
+CalendarDaily is a simple planner-style web app built with Next.js, React, TypeScript, and Tailwind CSS.
+
+It provides:
+- A month-by-month 2026 calendar view
+- Click-to-select date ranges inside each month
+- Per-month note inputs
+- Local persistence via `localStorage`
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Framer Motion (installed; currently not used in core flow)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Start development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Start local development server
+- `npm run build` - Build for production
+- `npm run start` - Run production build
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
 
-## Learn More
+## How It Works
 
-To learn more about Next.js, take a look at the following resources:
+### App entry
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/page.tsx` renders the main wall page.
+- `pages/Wall/Page.tsx` centers and displays the calendar card.
+- `pages/Calender/CalenderPage.tsx` controls month navigation and layout.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Calendar behavior
 
-## Deploy on Vercel
+- Calendar month metadata comes from `data/calender2026.json`.
+- Grid rendering and range selection logic live in `components/Calender/Calender.tsx`.
+- Selected range is saved per month with key format:
+	- `calendar-range-<monthIndex>`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Notes behavior
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `components/Notes/Notes.tsx` renders 5 note inputs per month.
+- Notes are saved with key format:
+	- `note-<monthIndex>-<noteId>`
+
+### Storage helpers
+
+- `store/localstore.ts` wraps `localStorage` access with client-side guards.
+
+## Data Files
+
+- `data/calender2026.json`
+	- Source of year, month names, days in month, and starting weekday.
+- `data/Background.json`
+	- Maps each month to card background color and hero image URL.
+
+## Images and Remote Sources
+
+- Static UI image assets are in `public/`.
+- External month images are loaded from Unsplash domains allowed in `next.config.ts`:
+	- `images.unsplash.com`
+	- `plus.unsplash.com`
+
+## Project Structure
+
+```text
+app/
+	globals.css
+	layout.tsx
+	page.tsx
+components/
+	Button/
+	Calender/
+	Notes/
+data/
+	Background.json
+	calender2026.json
+pages/
+	Calender/
+	Wall/
+store/
+	localstore.ts
+```
+
+## Customization Guide
+
+### Update calendar year data
+
+Edit `data/calender2026.json` with correct:
+- `days` per month
+- `startDay` (`0 = Sun` ... `6 = Sat`)
+
+### Change month visuals
+
+Edit `data/Background.json`:
+- `color` to change Tailwind background class
+- `image` to swap monthly hero image
+
+### Change note capacity
+
+In `components/Notes/Notes.tsx`, add/remove `Input` rows.
+
+## Notes for Contributors
+
+- Component and folder names currently use the spelling `Calender` in multiple places.
+	Keep this in mind when searching files or adding imports.
+- The app currently stores all user data in browser `localStorage`.
+	Clearing browser storage will remove saved ranges and notes.
+
+## Deployment
+
+Deploy as a standard Next.js app (for example on Vercel):
+
+1. Build with `npm run build`
+2. Start with `npm run start` or use your hosting provider's Next.js runtime
+
+
