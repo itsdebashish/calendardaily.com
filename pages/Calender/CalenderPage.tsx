@@ -10,7 +10,7 @@ import React from "react";
 
 export default function CalenderPage() {
   const currentMonthIndex = new Date().getMonth(); 
-  const [color,setColor] = React.useState(0)
+  // const [color,setColor] = React.useState(0)
   const [month, setMonth] = React.useState(currentMonthIndex);
   const [direction, setDirection] = React.useState(1);
 
